@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/layout_change_location">
+
+    <TextView
+        android:id="@+id/anchor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Chnage Location"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:textSize="20dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_below="@id/anchor"
+        android:background="@drawable/edit_text_background"/>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/anchor"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"/>
+
+    <View
+        android:id="@+id/center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"/>
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/spinner"
+        android:layout_toLeftOf="@id/center"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="#0099FF"
+        android:text="OK"/>
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/spinner"
+        android:layout_toRightOf="@id/center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="#0099FF"
+        android:text="Cancel"/>
+
+</RelativeLayout>

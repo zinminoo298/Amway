@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CheckStock">
+
+    <View
+        android:id="@+id/center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true" />
+
+    <LinearLayout
+        android:id="@+id/linearlayout1"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.535"
+            android:background="#DDDDDD">
+
+            <TextView
+                android:id="@+id/anchor1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Sub Inv:"
+                android:textSize="16sp"
+                android:textColor="#000000"/>
+
+            <TextView
+                android:id="@+id/txt_sub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/anchor1"
+                android:text="PICKLINE"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:textStyle="bold"/>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_alignRight="@id/txt_sub"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/anchor1"
+                android:background="@mipmap/edit"
+                android:backgroundTint="#1199EE"/>
+
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.005"
+            android:background="#FFFFFF"/>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.46"
+            android:background="#DDDDDD">
+
+            <TextView
+                android:id="@+id/anchor2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Location :"
+                android:textSize="16sp"
+                android:textColor="#000000"/>
+
+            <TextView
+                android:id="@+id/txt_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/anchor2"
+                android:text="D01"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:textStyle="bold"/>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_alignRight="@id/txt_location"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/anchor2"
+                android:background="@mipmap/edit"
+                android:backgroundTint="#1199EE"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/anchor3"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/linearlayout1"
+        android:layout_marginLeft="10dp"
+        android:text="Barcode"
+        android:textSize="18sp"
+        android:textColor="#000000"/>
+
+    <View
+        android:layout_width="220dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/edit_text_background"
+        android:layout_below="@id/anchor3" />
+
+    <EditText
+        android:id="@+id/edit_barcode"
+        android:layout_width="215dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/anchor3"
+        android:textSize="20sp"
+        android:singleLine="true"
+        android:autofillHints=""
+        android:textColor="#000000"
+        android:background="#00FFFFFF"/>
+
+    <TextView
+        android:id="@+id/anchor4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linearlayout1"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@id/anchor3"
+        android:text="Qty"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/anchor4"
+        android:layout_below="@id/linearlayout1"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="5dp"
+        app:thumbTint="#1199EE"
+        app:trackTint="#1199EE"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/anchor3"
+        android:background="@drawable/edit_text_background"
+        android:layout_below="@id/anchor4" />
+
+    <EditText
+        android:id="@+id/edit_qty"
+        android:layout_width="215dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@id/anchor3"
+        android:layout_below="@id/anchor4"
+        android:singleLine="true"
+        android:autofillHints=""
+        android:textSize="20sp"
+        android:textColor="#000000"
+        android:background="#00FFFFFF" />
+
+    <TextView
+        android:id="@+id/anchor5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/edit_barcode"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:text="Item :"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="#1199EE"/>
+
+    <EditText
+        android:id="@+id/edit_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/anchor5"
+        android:layout_marginStart="10dp"
+        android:text="100186TH"
+        android:textSize="20sp"
+        android:focusable="false"
+        android:textColor="#000000"/>
+
+    <TextView
+        android:id="@+id/anchor6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/edit_item"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Description :"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="#1199EE"/>
+
+    <EditText
+        android:id="@+id/edit_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/anchor6"
+        android:layout_marginStart="10dp"
+        android:text="ESPRING RPL FILTER/UVLAMP TH"
+        android:textSize="20sp"
+        android:focusable="false"
+        android:textColor="#000000"/>
+
+    <TextView
+        android:id="@+id/anchor7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/center"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/edit_desc"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:text="Total Items:"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#1199EE"/>
+
+    <TextView
+        android:id="@+id/anchor8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/center"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/edit_desc"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:text="Total Sub Inv:"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#1199EE"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/center"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/anchor7"
+        android:gravity="center"
+        android:text="200"
+        android:textSize="64sp"
+        android:textColor="#000000"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/center"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/anchor8"
+        android:gravity="center"
+        android:text="120"
+        android:textSize="64sp"
+        android:textColor="#000000"/>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:background="#DDDDDD"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="0dp"
+        android:layout_marginLeft="5dp"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:text="W02"
+            android:textColor="#000000"
+            android:textSize="25sp"
+            android:gravity="left|center"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:text="TEAM A"
+            android:textColor="#000000"
+            android:textSize="25sp"
+            android:gravity="left|center"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="Team Count #1"
+            android:textColor="#F50505"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

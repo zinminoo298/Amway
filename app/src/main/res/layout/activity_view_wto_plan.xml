@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ViewWtoPlan">
+
+    <LinearLayout
+        android:id="@+id/linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="20dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.9">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/edit_text_background"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:textSize="20sp"
+                android:singleLine="true"
+                android:hint="Barcode"
+                android:textColor="#000000"
+                android:background="#00FFFFFF"/>
+
+        </RelativeLayout>
+
+        <SearchView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            tools:layout_editor_absoluteX="120dp"
+            tools:layout_editor_absoluteY="38dp" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linearlayout"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:text="List of stock count"
+        android:textSize="14sp"
+        android:textColor="#1199EE"/>
+
+    <TextView
+        android:id="@+id/total_records"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linearlayout"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:text="Total 16 records"
+        android:textSize="14sp"
+        android:textColor="#1199EE"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/total_records"
+        android:layout_margin="20dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:background="#DDDDDD"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:text=""
+            android:textColor="#000000"
+            android:textSize="25sp"
+            android:gravity="left|center"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:text="Team Count #1"
+            android:textColor="#F50505"
+            android:textSize="25sp"
+            android:gravity="right|center"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
