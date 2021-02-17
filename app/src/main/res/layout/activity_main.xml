@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/drawer"
     tools:context=".MainActivity">
 
     <RelativeLayout
@@ -53,6 +54,7 @@
                 android:textSize="15sp"/>
 
             <TextView
+                android:id="@+id/txt_wto_items"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -159,6 +161,7 @@
                 android:textSize="15sp"/>
 
             <TextView
+                android:id="@+id/count_qty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
