@@ -6,20 +6,20 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.AsyncTask
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.util.Log
+import android.view.KeyEvent
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.amway.Database.DatabaseHandler
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.util.*
 
 class Login : AppCompatActivity() {
 
@@ -28,6 +28,9 @@ class Login : AppCompatActivity() {
         lateinit var login:Button
         lateinit var edtUser:EditText
         lateinit var edtPsw:EditText
+        lateinit var db:DatabaseHandler
+        var user = ""
+        var filePath = ""
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,44 +47,97 @@ class Login : AppCompatActivity() {
             requestStoragePermission();
         }
 
-        val db:DatabaseHandler = DatabaseHandler(this)
+        db = DatabaseHandler(this)
         db.openDatabase()
 
-        login.setOnClickListener {
+        recursiveScan(File("/sdcard/Download/"))
 
-            if(edtUser.text.toString()=="" || edtPsw.text.toString()==""){
-                Toast.makeText(this,"Please enter username and password",Toast.LENGTH_SHORT).show()
+        edtUser.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
+
+            if (event.keyCode == KeyEvent.KEYCODE_SPACE && event.action == KeyEvent.ACTION_UP || event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+
+                if (edtUser.text.toString() == "") {
+                    Toast.makeText(this, "Please enter username", Toast.LENGTH_SHORT).show()
+                    edtUser.requestFocus()
+                } else {
+                    edtPsw.requestFocus()
+                }
+            }
+
+            false
+
+        })
+
+        edtPsw.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
+
+            if (event.keyCode == KeyEvent.KEYCODE_SPACE && event.action == KeyEvent.ACTION_UP || event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+
+                if (edtUser.text.toString() == "" || edtPsw.text.toString() == "") {
+                    Toast.makeText(this, "Please enter username and password", Toast.LENGTH_SHORT).show()
+                } else {
+                    loginProcess()
+                }
+            }
+
+            false
+
+        })
+
+
+        login.setOnClickListener {
+            loginProcess()
+        }
+    }
+
+    private fun recursiveScan(f: File) {
+        val file = f.listFiles()
+        for (files in file) {
+//            if (ff.isDirectory) recursiveScan(f)
+            if (files.isFile && files.path.endsWith(".sqlite")) {
+                Log.d("Debug", files.toString())
+                filePath = files.toString()
+            }
+        }
+    }
+
+    private fun loginProcess(){
+        if(edtUser.text.toString()=="" || edtPsw.text.toString()==""){
+            Toast.makeText(this, "Please enter username and password", Toast.LENGTH_SHORT).show()
+        }
+        else{
+//            val filepath="/sdcard/Download/database.sqlite"
+            val file= File(filePath)
+            if(file.exists())
+            {
+                setTeam("")
+                AsyncTaskRunner(this, File(filePath), File("/data/data/com.example.amway/databases/master.db")).execute()
             }
             else{
-                val filepath="/sdcard/Download/database.sqlite"
-                val file= File(filepath)
-                if(file.exists())
-                {
-                    AsyncTaskRunner(this, File("/sdcard/Download/database.sqlite"), File("/data/data/com.example.amway/databases/master.db")).execute()
-                }
-                else{
-                    if(File("/data/data/com.example.amway/databases/master.db").exists()){
-                        //DO DB job
-                        db.loginCheck(edtUser.text.toString(), edtPsw.text.toString())
-                        if(DatabaseHandler.user_auth == "true"){
-                            db.statusCheck()
-                            db.stockCheck()
-                            db.wtoCheck()
-                            val intent = Intent(this,MainActivity::class.java)
-                            startActivity(intent)
-                        }
-                        else{
-                            Toast.makeText(this,"Wrong username or password",Toast.LENGTH_SHORT).show()
-                        }
+                if(File("/data/data/com.example.amway/databases/master.db").exists()){
+                    //DO DB job
+                    db.loginCheck(edtUser.text.toString(), edtPsw.text.toString())
+                    if(DatabaseHandler.user_auth == "true"){
+                        db.detailCheck()
+                        db.stockCheck()
+                        user = edtUser.text.toString()
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
                     }
                     else{
-                        Toast.makeText(this,"Master file not found",Toast.LENGTH_SHORT).show()
-//                        val intent = Intent(this,MainActivity::class.java)
-//                        startActivity(intent)
+                        Toast.makeText(this, "Wrong username or password", Toast.LENGTH_SHORT).show()
                     }
+                }
+                else{
+                    Toast.makeText(this, "Master file not found", Toast.LENGTH_SHORT).show()
                 }
             }
         }
+    }
+
+    private fun setTeam(v: String) {
+        val editor = getSharedPreferences("team", MODE_PRIVATE).edit()
+        editor.putString("valTeam", v)
+        editor.apply()
     }
 
     private fun requestStoragePermission(){
@@ -119,10 +175,10 @@ class Login : AppCompatActivity() {
         private var running = true
         internal lateinit var db:DatabaseHandler
 
-
         override fun doInBackground(vararg params: String?): String {
+
             while(running){
-                copy(src,output)
+                copy(src, output)
             }
             return "gg"
         }
@@ -144,14 +200,14 @@ class Login : AppCompatActivity() {
 
             db.loginCheck(edtUser.text.toString(), edtPsw.text.toString())
             if(DatabaseHandler.user_auth == "true"){
-                db.statusCheck()
+                db.detailCheck()
                 db.stockCheck()
-                db.wtoCheck()
-                val intent = Intent(context,MainActivity::class.java)
+                user = edtUser.text.toString()
+                val intent = Intent(context, MainActivity::class.java)
                 context.startActivity(intent)
             }
             else{
-                Toast.makeText(context,"Wrong username or password",Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Wrong username or password", Toast.LENGTH_SHORT).show()
             }
 
             super.onPostExecute(result)
@@ -176,6 +232,8 @@ class Login : AppCompatActivity() {
             `is`.close()
             running = false
             Log.d("#DB", "completed..")
+            db = DatabaseHandler(context!!)
+            db.createTable()
         }
     }
 }

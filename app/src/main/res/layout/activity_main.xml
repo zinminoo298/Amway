@@ -64,6 +64,28 @@
                 android:textColor="#000000"
                 android:textSize="35sp"/>
 
+            <TextView
+                android:id="@+id/anchor_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="10dp"
+                android:layout_below="@id/txt_wto_items"
+                android:text="Uncount Items:"
+                android:textColor="#EE4444"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/txt_uncount_items"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="10dp"
+                android:layout_below="@id/anchor_txt"
+                android:text="500"
+                android:textColor="#EE4444"
+                android:textSize="35sp"/>
+
         </RelativeLayout>
 
     </RelativeLayout>
@@ -90,6 +112,7 @@
             android:textColor="#000000"/>
 
         <TextView
+            android:id="@+id/txt_warehouse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -114,6 +137,7 @@
         android:background="#1199EE">
 
         <TextView
+            android:id="@+id/export_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -197,6 +221,7 @@
             android:textColor="#000000"/>
 
         <TextView
+            android:id="@+id/txt_team"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -221,6 +246,7 @@
         android:background="#DDDDDD">
 
         <TextView
+            android:id="@+id/txt_count_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
@@ -230,6 +256,7 @@
             android:textColor="#EE4444"/>
 
         <TextView
+            android:id="@+id/txt_seq"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
@@ -241,6 +268,18 @@
             android:textColor="#000000"/>
 
     </RelativeLayout>
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="30dp"
+            android:text=""
+            android:textSize="18sp"
+            android:textColor="#1199EE"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -259,6 +298,7 @@
         app:srcCompat="@mipmap/icon_add" />
 
     </RelativeLayout>
+
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav"

@@ -22,10 +22,14 @@
         android:supportsRtl="true"
         android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.Amway">
-        <activity android:name=".ViewWtoPlan"></activity>
-        <activity android:name=".ViewStockCount" />
-        <activity android:name=".CheckStock" />
-        <activity android:name=".Setup" />
+        <activity android:name=".ViewWtoPlan"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity android:name=".ViewStockCount"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".CheckStock"
+            android:parentActivityName=".Setup"/>
+        <activity android:name=".Setup"
+            android:parentActivityName=".MainActivity"/>
         <activity android:name=".Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -21,6 +21,7 @@
         android:weightSum="1">
 
         <RelativeLayout
+            android:id="@+id/RelativeLayout1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.535"
@@ -43,12 +44,13 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_below="@id/anchor1"
-                android:text="PICKLINE"
+                android:text=""
                 android:textSize="20sp"
                 android:textColor="#000000"
                 android:textStyle="bold"/>
 
             <ImageView
+                android:id="@+id/img_sub"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="10dp"
@@ -69,6 +71,7 @@
             android:background="#FFFFFF"/>
 
         <RelativeLayout
+            android:id="@+id/RelativeLayout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.46"
@@ -91,12 +94,13 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_below="@id/anchor2"
-                android:text="D01"
+                android:text=""
                 android:textSize="20sp"
                 android:textColor="#000000"
                 android:textStyle="bold"/>
 
             <ImageView
+                android:id="@+id/img_loc"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="10dp"
@@ -111,16 +115,45 @@
 
     </LinearLayout>
 
-    <TextView
+    <LinearLayout
         android:id="@+id/anchor3"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:layout_below="@id/linearlayout1"
         android:layout_marginLeft="10dp"
-        android:text="Barcode"
-        android:textSize="18sp"
-        android:textColor="#000000"/>
+        android:weightSum="1">
+
+        <TextView
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Barcode"
+            android:textSize="18sp"
+            android:textColor="#000000"/>
+
+        <LinearLayout
+            android:layout_weight="0.7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Carton"
+                android:textSize="18sp"
+                android:textColor="#000000"/>
+
+            <Switch
+                android:id="@+id/switch_carton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:thumbTint="#1199EE"
+                app:trackTint="#1199EE"
+                android:layout_gravity="center"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+        </LinearLayout>
+    </LinearLayout>
+
 
     <View
         android:layout_width="220dp"
@@ -139,7 +172,7 @@
         android:layout_below="@id/anchor3"
         android:textSize="20sp"
         android:singleLine="true"
-        android:autofillHints=""
+        android:inputType="textCapCharacters"
         android:textColor="#000000"
         android:background="#00FFFFFF"/>
 
@@ -149,18 +182,19 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/linearlayout1"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:layout_toEndOf="@id/anchor3"
         android:text="Qty"
         android:textColor="#000000"
         android:textSize="18sp" />
 
     <Switch
+        android:id="@+id/switch_qty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/anchor4"
         android:layout_below="@id/linearlayout1"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:layout_marginLeft="5dp"
         app:thumbTint="#1199EE"
         app:trackTint="#1199EE"
@@ -175,11 +209,11 @@
         android:layout_alignParentRight="true"
         android:layout_toRightOf="@id/anchor3"
         android:background="@drawable/edit_text_background"
-        android:layout_below="@id/anchor4" />
+        android:layout_below="@id/anchor3" />
 
     <EditText
         android:id="@+id/edit_qty"
-        android:layout_width="215dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="13dp"
         android:layout_marginEnd="10dp"
@@ -188,9 +222,11 @@
         android:layout_toEndOf="@id/anchor3"
         android:layout_below="@id/anchor4"
         android:singleLine="true"
-        android:autofillHints=""
+        android:inputType="numberDecimal|numberSigned"
+        android:imeOptions="actionDone"
         android:textSize="20sp"
         android:textColor="#000000"
+        android:selectAllOnFocus="true"
         android:background="#00FFFFFF" />
 
     <TextView
@@ -213,10 +249,40 @@
         android:layout_alignParentStart="true"
         android:layout_below="@id/anchor5"
         android:layout_marginStart="10dp"
-        android:text="100186TH"
+        android:text=""
         android:textSize="20sp"
         android:focusable="false"
         android:textColor="#000000"/>
+
+    <TextView
+        android:id="@+id/bcqty"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_below="@id/edit_qty"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="-1dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="0dp"
+        android:layout_toRightOf="@+id/center"
+        android:gravity="left|center"
+        android:text="Qty : "
+        android:textColor="#1199EE"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txt_carton_qty"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_toRightOf="@+id/center"
+        android:layout_below="@id/edit_qty"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="90dp"
+        android:gravity="left|center"
+        android:text="Carton Qty: "
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#1199EE"/>
 
     <TextView
         android:id="@+id/anchor6"
@@ -238,7 +304,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@id/anchor6"
         android:layout_marginStart="10dp"
-        android:text="ESPRING RPL FILTER/UVLAMP TH"
+        android:text=""
         android:textSize="20sp"
         android:focusable="false"
         android:textColor="#000000"/>
@@ -266,30 +332,32 @@
         android:layout_below="@id/edit_desc"
         android:layout_marginTop="30dp"
         android:gravity="center"
-        android:text="Total Sub Inv:"
+        android:text="Total Qty:"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="#1199EE"/>
 
     <TextView
+        android:id="@+id/txt_items"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/center"
         android:layout_alignParentStart="true"
         android:layout_below="@id/anchor7"
         android:gravity="center"
-        android:text="200"
+        android:text=""
         android:textSize="64sp"
         android:textColor="#000000"/>
 
     <TextView
+        android:id="@+id/txt_qty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/center"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/anchor8"
         android:gravity="center"
-        android:text="120"
+        android:text=""
         android:textSize="64sp"
         android:textColor="#000000"/>
 
@@ -311,30 +379,33 @@
         android:weightSum="1">
 
         <TextView
+            android:id="@+id/txt_warehouse"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
-            android:text="W02"
+            android:text=""
             android:textColor="#000000"
             android:textSize="25sp"
             android:gravity="left|center"
             android:layout_gravity="center" />
 
         <TextView
+            android:id="@+id/txt_team"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
-            android:text="TEAM A"
+            android:text=""
             android:textColor="#000000"
             android:textSize="25sp"
             android:gravity="left|center"
             android:layout_gravity="center" />
 
         <TextView
+            android:id="@+id/txt_type_seq"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:text="Team Count #1"
+            android:text=""
             android:textColor="#F50505"
             android:textSize="25sp"
             android:gravity="center"
