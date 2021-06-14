@@ -8,9 +8,9 @@ import android.media.MediaPlayer
 import android.os.Handler
 import android.util.Log
 import android.widget.Toast
-import androidx.core.content.contentValuesOf
 import com.example.amway.CheckStock
 import com.example.amway.Modal.StockCountModal
+import com.example.amway.Modal.SubInvModal
 import com.example.amway.Modal.WTOModal
 import java.io.File
 import java.io.FileOutputStream
@@ -42,6 +42,7 @@ class DatabaseHandler(private val context: Context) {
         var cartonQty=0
         var ViewSC = ArrayList<StockCountModal>()
         var ViewWTO = ArrayList<WTOModal>()
+        var ViewSub = ArrayList<SubInvModal>()
         var cartoncheck = ""
         var orcCheck=""
     }
@@ -139,8 +140,8 @@ class DatabaseHandler(private val context: Context) {
 
     fun wtoCheck(){
         val db = context.openOrCreateDatabase(master,Context.MODE_PRIVATE,null)
-        val query = "SELECT DISTINCT[Oracle Item],[Item Description] FROM tbl_WTO WHERE Warehouse='$wareHouse'"
-        val query1 = "SELECT DISTINCT[Oracle Item], [Item Description] FROM tbl_WTO  WHERE [Oracle Item] Not IN  (SELECT barcode FROM record) and warehouse='$wareHouse' "
+        val query = "SELECT DISTINCT[Oracle Item],[Item Description] FROM tbl_WTO WHERE Warehouse='$wareHouse' AND Flag='Y'"
+        val query1 = "SELECT DISTINCT[Oracle Item], [Item Description] FROM tbl_WTO  WHERE [Oracle Item] Not IN  (SELECT barcode FROM record) and warehouse='$wareHouse' AND Flag='Y' "
         val cursor = db.rawQuery(query,null)
         if(cursor.moveToFirst()){
             totalWTO = cursor.count
@@ -271,8 +272,8 @@ class DatabaseHandler(private val context: Context) {
 
     fun checkMaster(scanned_barcode: String,barcode:String,subInventory:String,warehouse:String,location: String,qty:String,user: String,team:String,time:String){
         val db = context.openOrCreateDatabase(master,Context.MODE_PRIVATE,null)
-        val query = "SELECT [Item Description],[Oracle Item] FROM tbl_WTO WHERE [Oracle Item] like '$barcode%' AND Warehouse='$warehouse'"
-        val query3 = "SELECT [Item Description],[Oracle Item] FROM tbl_WTO WHERE [Item] like '$barcode%' AND Warehouse='$warehouse'"
+        val query = "SELECT [Item Description],[Oracle Item] FROM tbl_WTO WHERE [Oracle Item] like '$barcode%' AND Warehouse='$warehouse' AND Flag='Y'"
+        val query3 = "SELECT [Item Description],[Oracle Item] FROM tbl_WTO WHERE [Item] like '$barcode%' AND Warehouse='$warehouse' AND Flag='Y'"
         val cursor = db.rawQuery(query,null)
         val cursor3 = db.rawQuery(query3,null)
         if(cursor.moveToFirst()){
@@ -441,7 +442,7 @@ class DatabaseHandler(private val context: Context) {
     fun checkCar(prtnum:String,subInventory:String,warehouse:String,location: String,qty:String,user: String,team:String,time:String){
         val db = context.openOrCreateDatabase(master,Context.MODE_PRIVATE,null)
         val query = "SELECT * FROM uoms WHERE prtnum like '$prtnum%' ORDER BY prtnum ASC "
-        val queryn = "SELECT [Item Description],[Oracle Item] FROM tbl_WTO WHERE [Oracle Item] like'$prtnum%' AND Warehouse='$warehouse'"
+        val queryn = "SELECT [Item Description],[Oracle Item] FROM tbl_WTO WHERE [Oracle Item] like'$prtnum%' AND Warehouse='$warehouse' AND Flag='Y'"
         val cursorn = db.rawQuery(queryn,null)
         val cursor = db.rawQuery(query,null)
         if(cursorn.moveToFirst()) {
@@ -520,7 +521,32 @@ class DatabaseHandler(private val context: Context) {
         }
     }
 
+    fun loadStockCount_1(subInventory: String?){
+        ViewSC.clear()
+        val db = context.openOrCreateDatabase(master, Context.MODE_PRIVATE, null)
+        val query = "SELECT * FROM record WHERE inventory='$subInventory'"
+        val cursor = db.rawQuery(query, null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val item = cursor.getString(0)
+                val sub_inv = cursor.getString(1)
+                val loc = cursor.getString(2)
+                val desc = cursor.getString(9)
+                val qty = cursor.getInt(3)
+
+                println(item)
+
+                val data = StockCountModal(item, sub_inv, loc, desc, qty)
+                ViewSC.add(data)
+            } while (cursor.moveToNext())
+        } else {
+
+        }
+    }
+
     fun loadStockCount() {
+        ViewSC.clear()
         val db = context.openOrCreateDatabase(master, Context.MODE_PRIVATE, null)
         val query = "SELECT * FROM record"
         val cursor = db.rawQuery(query, null)
@@ -543,10 +569,30 @@ class DatabaseHandler(private val context: Context) {
         }
     }
 
+    fun loadSubInv() {
+        ViewSub.clear()
+        val db = context.openOrCreateDatabase(master, Context.MODE_PRIVATE, null)
+        val query = "SELECT distinct inventory FROM record"
+        val cursor = db.rawQuery(query, null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val subInv = cursor.getString(0)
+
+                println(subInv)
+
+                val data = SubInvModal(subInv)
+                ViewSub.add(data)
+            } while (cursor.moveToNext())
+        } else {
+
+        }
+    }
+
     fun loadWTO(){
         ViewWTO.clear()
         val db = context.openOrCreateDatabase(master,Context.MODE_PRIVATE,null)
-        val query = "SELECT DISTINCT[Oracle Item],[Item Description] FROM tbl_WTO WHERE Warehouse='$wareHouse' ORDER BY  [Oracle Item] ASC "
+        val query = "SELECT DISTINCT[Oracle Item],[Item Description] FROM tbl_WTO WHERE Warehouse='$wareHouse' AND Flag='Y' ORDER BY  [Oracle Item] ASC "
         val cursor = db.rawQuery(query,null)
         if(cursor.moveToFirst()){
             do{
@@ -565,7 +611,7 @@ class DatabaseHandler(private val context: Context) {
     fun loadUncheckWTO(){
         ViewWTO.clear()
         val db = context.openOrCreateDatabase(master,Context.MODE_PRIVATE,null)
-        val query = "SELECT DISTINCT[Oracle Item], [Item Description] FROM tbl_WTO  WHERE [Oracle Item] Not IN  (SELECT barcode FROM record) and warehouse='$wareHouse' ORDER BY [Oracle Item] ASC  "
+        val query = "SELECT DISTINCT[Oracle Item], [Item Description] FROM tbl_WTO  WHERE [Oracle Item] Not IN  (SELECT barcode FROM record) and warehouse='$wareHouse' AND Flag='Y' ORDER BY [Oracle Item] ASC  "
         val cursor = db.rawQuery(query,null)
         if(cursor.moveToFirst()){
             do{

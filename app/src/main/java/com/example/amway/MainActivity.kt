@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         private var progressBar1: ProgressBar? =null
         internal lateinit var dialog: AlertDialog
         internal lateinit var export: Button
+        lateinit var db:DatabaseHandler
         var team = ""
         var status=""
     }
@@ -68,6 +69,7 @@ class MainActivity : AppCompatActivity() {
         wtoView = findViewById(R.id.anchor1)
         txtDate = findViewById(R.id.date)
         txtUncountItem = findViewById(R.id.txt_uncount_items)
+        db = DatabaseHandler(this)
 
         loadTeam()
         loadStatus()
@@ -126,7 +128,13 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_export->{
-                    exportDialog()
+                    db.loadUncheckWTO()
+                    if(DatabaseHandler.ViewWTO.size == 0){
+                        exportDialog()
+                    }
+                    else{
+                        Toast.makeText(this,"Uncheck Items Found",Toast.LENGTH_SHORT).show()
+                    }
                 }
 
                 R.id.nav_clear->{
@@ -147,7 +155,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         stockView.setOnClickListener {
-            val intent = Intent(this,ViewStockCount::class.java)
+            val intent = Intent(this,SubInv::class.java)
             startActivity(intent)
         }
 
