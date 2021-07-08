@@ -26,6 +26,7 @@ class CheckStock : AppCompatActivity() {
         lateinit var Layout:RelativeLayout
         lateinit var Layout1:RelativeLayout
         lateinit var txtSub:TextView
+        lateinit var ctQty:TextView
         lateinit var txtLocation:TextView
         lateinit var txtWarehouse:TextView
         lateinit var txtTeam:TextView
@@ -50,6 +51,7 @@ class CheckStock : AppCompatActivity() {
         var n = 0
         var bc:String? = null
         var date = ""
+        val re = Regex("[^A-Za-z0-9 ]")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,6 +72,7 @@ class CheckStock : AppCompatActivity() {
         edtDesc = findViewById(R.id.edit_desc)
         txtItems = findViewById(R.id.txt_items)
         txtQty = findViewById(R.id.txt_qty)
+        ctQty = findViewById(R.id.ctqty)
         switchQty = findViewById(R.id.switch_qty)
         switchBox = findViewById(R.id.switch_carton)
         txtCurrentQty = findViewById(R.id.bcqty)
@@ -90,6 +93,7 @@ class CheckStock : AppCompatActivity() {
         edtQty.isFocusable = false
         edtQty.isEnabled = false
         txtCartonQty.visibility = GONE
+        ctQty.visibility = GONE
 
         getDate()
 
@@ -133,12 +137,14 @@ class CheckStock : AppCompatActivity() {
                     edtQty.isEnabled = false
                     switchQty.isEnabled = false
                     txtCartonQty.visibility = VISIBLE
+                    ctQty.visibility = VISIBLE
                 } else {
                     edtQty.isFocusable = true
                     edtQty.isEnabled = true
                     edtQty.isFocusableInTouchMode = true
                     switchQty.isEnabled = true
                     txtCartonQty.visibility = GONE
+                    ctQty.visibility = GONE
                 }
             }
         })
@@ -152,11 +158,11 @@ class CheckStock : AppCompatActivity() {
                     Toast.makeText(this, "Please check barcode,subinventory and location", Toast.LENGTH_SHORT).show()
                 } else {
                     if (switchBox.isChecked) {
-                        newitem = edtBarcode.text.toString()
-                        var barcode = edtBarcode.text.toString()
+                        newitem = re.replace(edtBarcode.text.toString(),"")
+                        var barcode = re.replace(edtBarcode.text.toString(),"")
                         var subBarcode = barcode.substring(0, barcode.length.coerceAtMost(4))
                         getDate()
-                        db.checkCarton(subBarcode, edtBarcode.text.toString(), txtSub.text.toString(), txtWarehouse.text.toString(), txtLocation.text.toString(), edtQty.text.toString(), "${Login.user}", txtTeam.text.toString(), date)
+                        db.checkCarton(subBarcode, barcode, txtSub.text.toString(), txtWarehouse.text.toString(), txtLocation.text.toString(), edtQty.text.toString(), "${Login.user}", txtTeam.text.toString(), date)
                         if (DatabaseHandler.cartoncheck == "yes") {
                             println("OK $bc")
                             edtItem.setText("${DatabaseHandler.oracle}")
@@ -165,16 +171,16 @@ class CheckStock : AppCompatActivity() {
                             txtQty.text = "${DatabaseHandler.itemsQty}"
                             txtCurrentQty.text = "Qty : ${DatabaseHandler.currentQty}"
                             if (txtCurrentQty.text.toString() == "0") {
-                                txtCartonQty.text = "Carton Qty : 0"
+                                txtCartonQty.text = "0 @ ${DatabaseHandler.cartonQty} "
                             } else {
-                                if (bc == edtBarcode.text.toString()) {
+                                if (bc == barcode) {
                                     n = n + 1
-                                    txtCartonQty.text = "Carton Qty : $n"
-                                    bc = edtBarcode.text.toString()
+                                    txtCartonQty.text = "$n @ ${DatabaseHandler.cartonQty}"
+                                    bc = barcode
                                 } else {
-                                    bc = edtBarcode.text.toString()
+                                    bc = barcode
                                     n = 1
-                                    txtCartonQty.text = "Carton Qty : $n"
+                                    txtCartonQty.text = "$n @ ${DatabaseHandler.cartonQty}"
                                 }
                             }
                             edtBarcode.text.clear()
@@ -191,11 +197,11 @@ class CheckStock : AppCompatActivity() {
                             val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                             imm.showSoftInput(edtQty, InputMethodManager.SHOW_IMPLICIT)
                         } else {
-                            var barcode = edtBarcode.text.toString()
+                            var barcode =  re.replace(edtBarcode.text.toString(),"")
                             var subBarcode = barcode.substring(0, barcode.length.coerceAtMost(4))
-                            newitem = edtBarcode.text.toString()
+                            newitem =  re.replace(edtBarcode.text.toString(),"")
                             getDate()
-                            db.checkBarcode(edtBarcode.text.toString(), subBarcode, txtSub.text.toString(), txtWarehouse.text.toString(), txtLocation.text.toString(), edtQty.text.toString(), "${Login.user}", txtTeam.text.toString(), date)
+                            db.checkBarcode(barcode, subBarcode, txtSub.text.toString(), txtWarehouse.text.toString(), txtLocation.text.toString(), edtQty.text.toString(), "${Login.user}", txtTeam.text.toString(), date)
                             if (DatabaseHandler.orcCheck == "no") {
                                 addNewItem()
                             } else {
@@ -228,11 +234,11 @@ class CheckStock : AppCompatActivity() {
                     val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.showSoftInput(edtQty, InputMethodManager.SHOW_IMPLICIT)
                 } else {
-                    var barcode = edtBarcode.text.toString()
+                    var barcode = re.replace(edtBarcode.text.toString(),"")
                     var subBarcode = barcode.substring(0, barcode.length.coerceAtMost(4))
-                    newitem = edtBarcode.text.toString()
+                    newitem =  re.replace(edtBarcode.text.toString(),"")
                     getDate()
-                    db.checkBarcode(edtBarcode.text.toString(), subBarcode, txtSub.text.toString(), txtWarehouse.text.toString(), txtLocation.text.toString(), edtQty.text.toString(), "${Login.user}", txtTeam.text.toString(), date)
+                    db.checkBarcode(barcode, subBarcode, txtSub.text.toString(), txtWarehouse.text.toString(), txtLocation.text.toString(), edtQty.text.toString(), "${Login.user}", txtTeam.text.toString(), date)
                     if (DatabaseHandler.orcCheck == "no") {
                         addNewItem()
                     } else {
@@ -352,7 +358,7 @@ class CheckStock : AppCompatActivity() {
             n=1
             bc = edtItem.text.toString()
             println(bc)
-            txtCartonQty.text = "Carton Qty : 1"
+            txtCartonQty.text = "1"
             edtBarcode.text.clear()
             setStatus("")
         }

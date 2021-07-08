@@ -257,7 +257,7 @@
     <TextView
         android:id="@+id/bcqty"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
         android:layout_below="@id/edit_qty"
         android:layout_alignParentEnd="true"
         android:layout_marginLeft="-1dp"
@@ -271,18 +271,33 @@
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/ctqty"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@id/bcqty"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="-1dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="0dp"
+        android:layout_toRightOf="@+id/center"
+        android:gravity="left|center"
+        android:text="Carton @ Qty :"
+        android:textColor="#1199EE"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
         android:id="@+id/txt_carton_qty"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
         android:layout_toRightOf="@+id/center"
-        android:layout_below="@id/edit_qty"
+        android:layout_below="@id/ctqty"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="90dp"
-        android:gravity="left|center"
-        android:text="Carton Qty: "
+        android:gravity="left|top"
+        android:text=""
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="#1199EE"/>
+        android:textColor="#000000"/>
 
     <TextView
         android:id="@+id/anchor6"

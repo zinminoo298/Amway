@@ -152,6 +152,10 @@ class Setup : AppCompatActivity() {
 
     override fun onBackPressed() {
         db.stockCheck()
+        db.wtoCheck()
+        MainActivity.txtWtoItems.text = DatabaseHandler.totalWTO.toString()
+        MainActivity.txtUncountItem.text = DatabaseHandler.uncountWto.toString()
+
         if(DatabaseHandler.totalStock == 0){
             MainActivity.stockView.visibility = View.GONE
         }

@@ -140,8 +140,8 @@ class DatabaseHandler(private val context: Context) {
 
     fun wtoCheck(){
         val db = context.openOrCreateDatabase(master,Context.MODE_PRIVATE,null)
-        val query = "SELECT DISTINCT[Oracle Item],[Item Description] FROM tbl_WTO WHERE Warehouse='$wareHouse' AND Flag='Y'"
-        val query1 = "SELECT DISTINCT[Oracle Item], [Item Description] FROM tbl_WTO  WHERE [Oracle Item] Not IN  (SELECT barcode FROM record) and warehouse='$wareHouse' AND Flag='Y' "
+        val query = "SELECT DISTINCT[Oracle Item],[Item Description], SubInv FROM tbl_WTO WHERE Warehouse='$wareHouse' AND Flag='Y' ORDER BY  [SubInv] ASC"
+        val query1 = "SELECT DISTINCT[Oracle Item], [Item Description], SubInv FROM tbl_WTO  WHERE [Oracle Item] Not IN  (SELECT barcode FROM record) and warehouse='$wareHouse' AND Flag='Y' ORDER BY  [SubInv] ASC "
         val cursor = db.rawQuery(query,null)
         if(cursor.moveToFirst()){
             totalWTO = cursor.count
@@ -155,7 +155,7 @@ class DatabaseHandler(private val context: Context) {
             uncountWto = cursor1.count
         }
         else{
-            uncountWto = totalWTO
+            uncountWto = 0
         }
         db.close()
     }
@@ -592,13 +592,14 @@ class DatabaseHandler(private val context: Context) {
     fun loadWTO(){
         ViewWTO.clear()
         val db = context.openOrCreateDatabase(master,Context.MODE_PRIVATE,null)
-        val query = "SELECT DISTINCT[Oracle Item],[Item Description] FROM tbl_WTO WHERE Warehouse='$wareHouse' AND Flag='Y' ORDER BY  [Oracle Item] ASC "
+        val query = "SELECT DISTINCT[Oracle Item],[Item Description], SubInv FROM tbl_WTO WHERE Warehouse='$wareHouse' AND Flag='Y' ORDER BY  [SubInv] ASC "
         val cursor = db.rawQuery(query,null)
         if(cursor.moveToFirst()){
             do{
                 val item = cursor.getString(0)
                 val desc = cursor.getString(1)
-                val data = WTOModal(item,desc)
+                val subInv = cursor.getString(2)
+                val data = WTOModal(item,desc,subInv)
                 ViewWTO.add(data)
             }while(cursor.moveToNext())
             println(ViewWTO.size)
@@ -611,13 +612,14 @@ class DatabaseHandler(private val context: Context) {
     fun loadUncheckWTO(){
         ViewWTO.clear()
         val db = context.openOrCreateDatabase(master,Context.MODE_PRIVATE,null)
-        val query = "SELECT DISTINCT[Oracle Item], [Item Description] FROM tbl_WTO  WHERE [Oracle Item] Not IN  (SELECT barcode FROM record) and warehouse='$wareHouse' AND Flag='Y' ORDER BY [Oracle Item] ASC  "
+        val query = "SELECT DISTINCT[Oracle Item], [Item Description], SubInv FROM tbl_WTO  WHERE [Oracle Item] Not IN  (SELECT barcode FROM record) and warehouse='$wareHouse' AND Flag='Y' ORDER BY [SubInv] ASC  "
         val cursor = db.rawQuery(query,null)
         if(cursor.moveToFirst()){
             do{
                 val item = cursor.getString(0)
                 val desc = cursor.getString(1)
-                val data = WTOModal(item,desc)
+                val subInv = cursor.getString(2)
+                val data = WTOModal(item,desc,subInv)
                 ViewWTO.add(data)
             }while(cursor.moveToNext())
             println(ViewWTO.size)
@@ -658,9 +660,12 @@ class DatabaseHandler(private val context: Context) {
         val db = context.openOrCreateDatabase(master,Context.MODE_PRIVATE,null)
         var values = ContentValues()
         values.put("[Oracle Item]",oracle)
+        values.put("[Item]",oracle)
         values.put("[Item Description]",description)
         values.put("Warehouse",warehouse)
-        db.insert("masters",null,values)
+        values.put("SubInv",subInventory)
+        values.put("Flag","Y")
+        db.insertWithOnConflict("tbl_WTO",null,values,SQLiteDatabase.CONFLICT_REPLACE)
 
         var values1 = ContentValues()
         values1.put("scanned_barcode",oracle)

@@ -5,16 +5,14 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.provider.ContactsContract
 import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.amway.Database.DatabaseHandler
@@ -46,9 +44,12 @@ class MainActivity : AppCompatActivity() {
         private var progressBar1: ProgressBar? =null
         internal lateinit var dialog: AlertDialog
         internal lateinit var export: Button
+        internal lateinit var btnShow:Button
+        internal lateinit var btnExport:Button
         lateinit var db:DatabaseHandler
         var team = ""
         var status=""
+        var checkUncount = true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,7 +82,7 @@ class MainActivity : AppCompatActivity() {
         txtTeam.text = team
         txtCountType.text = DatabaseHandler.countType
         txtSequence.text = DatabaseHandler.countSeq
-        txtDate.setText("Date : ${ DatabaseHandler.countDate }")
+        txtDate.setText("Date : ${DatabaseHandler.countDate}")
         txtUncountItem.text = DatabaseHandler.uncountWto.toString()
 
         if(DatabaseHandler.totalStock == 0){
@@ -113,56 +114,71 @@ class MainActivity : AppCompatActivity() {
 
             // Handle navigation view item clicks here.
             when (menuItem.itemId) {
-                R.id.nav_home->{
+                R.id.nav_home -> {
 
                 }
 
-                R.id.nav_view->{
-                    if(stockView.isVisible){
-                        val intent = Intent(this,ViewStockCount::class.java)
+                R.id.nav_view -> {
+                    if (stockView.isVisible) {
+                        val intent = Intent(this, ViewStockCount::class.java)
                         startActivity(intent)
-                    }
-                    else{
-                        Toast.makeText(this,"No Scanned Data",Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "No Scanned Data", Toast.LENGTH_SHORT).show()
                     }
                 }
 
-                R.id.nav_export->{
+                R.id.nav_export -> {
                     db.loadUncheckWTO()
-                    if(DatabaseHandler.ViewWTO.size == 0){
+                    if (DatabaseHandler.ViewWTO.size == 0) {
                         exportDialog()
-                    }
-                    else{
-                        Toast.makeText(this,"Uncheck Items Found",Toast.LENGTH_SHORT).show()
+                    } else {
+                        uncountDialog()
+                        Toast.makeText(this, "Uncheck Items Found", Toast.LENGTH_SHORT).show()
                     }
                 }
 
-                R.id.nav_clear->{
-                    val db = this.openOrCreateDatabase("master.db",Context.MODE_PRIVATE,null)
+                R.id.nav_clear -> {
+                    val db = this.openOrCreateDatabase("master.db", Context.MODE_PRIVATE, null)
                     db.execSQL("DELETE FROM record")
-                    Toast.makeText(this,"Data Cleared",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Data Cleared", Toast.LENGTH_SHORT).show()
                     stockView.visibility = GONE
                     teamView.visibility = GONE
                     setTeam("")
+                    txtUncountItem.text = DatabaseHandler.totalWTO.toString()
                 }
             }
             true
         }
 
         fab.setOnClickListener {
-            val intent = Intent(this,Setup::class.java)
+            val intent = Intent(this, Setup::class.java)
             startActivity(intent)
         }
 
         stockView.setOnClickListener {
-            val intent = Intent(this,SubInv::class.java)
+            val intent = Intent(this, ViewStockCount::class.java)
             startActivity(intent)
         }
 
         wtoView.setOnClickListener {
-            val intent = Intent(this,ViewWtoPlan::class.java)
+            checkUncount = false
+            val intent = Intent(this, ViewWtoPlan::class.java)
             startActivity(intent)
         }
+
+//        val A:IntArray = intArrayOf(1, 3, 6, 4, 1, 2)
+//        val N: Int = A.size
+//        val set: MutableSet<Int> = HashSet()
+//        for (a in A) {
+//            if (a > 0) {
+//                set.add(a)
+//            }
+//        }
+//        for (i in 1..N + 1) {
+//            if (!set.contains(i)) {
+//                return i
+//            }
+//        }
 
     }
 
@@ -173,6 +189,30 @@ class MainActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun uncountDialog(){
+        val builder= AlertDialog.Builder(this)
+        val inflater=this.layoutInflater
+        val view=inflater.inflate(R.layout.view_uncount, null)
+        builder.setView(view)
+        dialog =builder.create()
+        dialog.show()
+        dialog.setCancelable(false)
+        btnShow = view.findViewById(R.id.btn_show)
+        btnExport = view.findViewById(R.id.btn_export)
+
+        btnShow.setOnClickListener {
+            checkUncount = true
+            dialog.dismiss()
+            val intent = Intent(this, ViewWtoPlan::class.java)
+            startActivity(intent)
+        }
+        btnExport.setOnClickListener {
+            dialog.dismiss()
+            exportDialog()
+        }
+
     }
 
     fun exportDialog(){
@@ -304,7 +344,7 @@ class MainActivity : AppCompatActivity() {
                 bw.flush()
 
             }
-            Toast.makeText(this,"Export Successful",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Export Successful", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
         catch (ex: Exception) {
@@ -319,9 +359,9 @@ class MainActivity : AppCompatActivity() {
         team = prefs.getString("valTeam", "").toString()
     }
 
-    private fun setStatus(v:String){
-        var editor = getSharedPreferences("status",Activity.MODE_PRIVATE).edit()
-        editor.putString("valStatus",v)
+    private fun setStatus(v: String){
+        var editor = getSharedPreferences("status", Activity.MODE_PRIVATE).edit()
+        editor.putString("valStatus", v)
         editor.apply()
     }
 

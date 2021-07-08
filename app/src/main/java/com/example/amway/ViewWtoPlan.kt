@@ -1,5 +1,6 @@
 package com.example.amway
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -19,8 +20,8 @@ class ViewWtoPlan : AppCompatActivity() {
         private lateinit var recyclerView: RecyclerView
         private lateinit var viewAdapter: RecyclerView.Adapter<*>
         private lateinit var viewManager: RecyclerView.LayoutManager
-        private lateinit var txtRecord:TextView
-        private lateinit var spinner:Spinner
+        lateinit var txtRecord:TextView
+        lateinit var spinner:Spinner
         var showList = ArrayList<String>()
     }
 
@@ -34,15 +35,22 @@ class ViewWtoPlan : AppCompatActivity() {
         db = DatabaseHandler(this)
         DatabaseHandler.ViewWTO.clear()
         showList.clear()
-        db.loadWTO()
+
+        if(MainActivity.checkUncount){
+            db.loadUncheckWTO()
+            showList.add("Uncount")
+            val arrayAdapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.spinner_item, showList)
+            spinner.adapter = arrayAdapter
+        }
+        else{
+            db.loadWTO()
+            showList.add("All")
+            showList.add("Uncount")
+            val arrayAdapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.spinner_item, showList)
+            spinner.adapter = arrayAdapter
+        }
+
         txtType.text = "${DatabaseHandler.countType} ${DatabaseHandler.countSeq}"
-
-        showList.add("All")
-        showList.add("Uncount")
-
-        val arrayAdapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.spinner_item, showList)
-//        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = arrayAdapter
 
         viewManager = LinearLayoutManager(this)
         viewAdapter = WTOAdapter(DatabaseHandler.ViewWTO, this)
@@ -63,11 +71,13 @@ class ViewWtoPlan : AppCompatActivity() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if(spinner.selectedItem == "Uncount"){
+                    MainActivity.checkUncount = true
                     db.loadUncheckWTO()
                     recyclerView.adapter!!.notifyDataSetChanged()
                     txtRecord.setText("Total ${DatabaseHandler.ViewWTO.size} records")
                 }
                 else{
+                    MainActivity.checkUncount = false
                     db.loadWTO()
                     recyclerView.adapter!!.notifyDataSetChanged()
                     txtRecord.setText("Total ${DatabaseHandler.ViewWTO.size} records")
@@ -75,5 +85,19 @@ class ViewWtoPlan : AppCompatActivity() {
             }
         }
 
+    }
+
+    override fun onBackPressed() {
+        db.stockCheck()
+        db.wtoCheck()
+        MainActivity.txtUncountItem.text = DatabaseHandler.uncountWto.toString()
+        MainActivity.txtCountItem.text = DatabaseHandler.totalStock.toString()
+        MainActivity.txtCountQty.text = DatabaseHandler.totalStockQty.toString()
+        val myIntent = Intent(this, MainActivity::class.java)
+
+        myIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(myIntent)
+        this.finish()
+        super.onBackPressed()
     }
 }

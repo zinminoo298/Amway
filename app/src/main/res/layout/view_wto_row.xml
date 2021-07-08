@@ -58,7 +58,7 @@
                     android:textSize="15sp"/>
 
                 <TextView
-                    android:id="@+id/view_inv"
+                    android:id="@+id/txt_inv"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.53"
