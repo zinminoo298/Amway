@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp">
+
+        <TextView
+            android:id="@+id/txt_bc"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginBottom="15dp"
+            android:text = ""
+            android:textSize="22sp"
+            android:textColor="#0099FF"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_text_background"/>
+
+            <TextView
+                android:id="@+id/txt_sub"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="left|center"
+                android:singleLine="true"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_text_background"/>
+
+            <Spinner
+                android:id="@+id/spinner_lc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Description"
+                android:gravity="left|center"
+                android:focusable="false"
+                android:singleLine="true"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"/>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_text_background"/>
+
+            <EditText
+                android:id="@+id/edt_qty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Quantity"
+                android:gravity="left|center"
+                android:singleLine="true"
+                android:inputType="numberSigned"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:background="#00FFFFFF" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+            <Button
+                android:id="@+id/btn_ok"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:backgroundTint="#0099FF"
+                android:text="OK"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="15dp"/>
+
+            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:backgroundTint="#0099FF"
+                android:text="Cancel"
+                android:layout_marginTop="15dp"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>
